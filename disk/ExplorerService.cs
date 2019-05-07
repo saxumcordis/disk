@@ -8,6 +8,8 @@ namespace disk
 {
     class ExplorerService
     {
+        public DiskFacade activeDisk { get; set; }
+        public string activePath { get; set; }
         public List<DiskFacade> disks = new List<DiskFacade>();
         public DiskFacade createDisk(string name, int size)
         {
@@ -15,6 +17,5 @@ namespace disk
             disks.Add(disk);
             return disk;
         }
-
     }
 }

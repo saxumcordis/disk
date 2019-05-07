@@ -25,14 +25,14 @@ namespace disk
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if ((toolStripTextBox1.Text.Length != 0) & (numRegex.IsMatch(toolStripTextBox2.Text)) & (ifExistInDisks()))
+            if ((service.activeDisk == null) && (toolStripTextBox1.Text.Length != 0) && (numRegex.IsMatch(toolStripTextBox2.Text)) && isDiskExists())
             {
                 flowLayoutPanel1.Controls.Add(viewFromDisk(service.createDisk(toolStripTextBox1.Text, Int32.Parse(toolStripTextBox2.Text))));
                 toolStripTextBox1.Clear();
                 toolStripTextBox2.Clear();
             }
         }
-        private bool ifExistInDisks()
+        private bool isDiskExists()
         {
             foreach (var disk in service.disks)
                 if (toolStripTextBox1.Text == disk.name)
@@ -73,15 +73,51 @@ namespace disk
 
         private void openDisk(DiskFacade disk)
         {
+            service.activeDisk = disk;
             flowLayoutPanel1.Controls.Clear();
-
+            foreach(var xzcho in service.activeDisk.disk.viewDirectory(""))
+            {
+                flowLayoutPanel1.Controls.Add(viewFromFolder(xzcho.path));
+            }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
+            var path = toolStripTextBox4.Text;
+            if (service.activeDisk != null)
+            {
+                flowLayoutPanel1.Controls.Add(viewFromFolder(path));
+                service.activeDisk.disk.createPath(path);
+            }
+            else
+                MessageBox.Show("Can't create folder in null space");
+            toolStripTextBox4.Clear();
         }
-       
-    
-        
+        private Control viewFromFolder(string path)
+        {
+            var view = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                Width = 50,
+                Height = 100,
+            };
+            var pictureBox = new PictureBox()
+            {
+                Image = new Bitmap(".../folder.png"),
+                Width = 50,
+                Height = 32,
+            };
+            view.Controls.Add(pictureBox);
+
+            var label = new Label()
+            {
+                Text = path,
+                TextAlign = ContentAlignment.TopCenter,
+                Padding = new Padding(0, 0, 66, 0)
+            };
+            view.Controls.Add(label);
+
+            return view;
+        }
     }
 }
