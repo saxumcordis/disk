@@ -25,11 +25,11 @@ namespace disk
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if ((service.activeDisk == null) && (toolStripTextBox1.Text.Length != 0) && (numRegex.IsMatch(toolStripTextBox2.Text)) && isDiskExists())
+            if ((service.activeDisk == null) && (toolStripTextBox1.Text.Length != 0) && (numRegex.IsMatch(toolStripTextBox4.Text)) && isDiskExists())
             {
-                flowLayoutPanel1.Controls.Add(viewFromDisk(service.createDisk(toolStripTextBox1.Text, Int32.Parse(toolStripTextBox2.Text))));
-                toolStripTextBox1.Clear();
+                flowLayoutPanel1.Controls.Add(viewFromDisk(service.createDisk(toolStripTextBox2.Text, Int32.Parse(toolStripTextBox4.Text))));
                 toolStripTextBox2.Clear();
+                toolStripTextBox4.Clear();
             }
         }
         private bool isDiskExists()
@@ -83,7 +83,7 @@ namespace disk
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            var path = toolStripTextBox4.Text;
+            var path = toolStripTextBox6.Text;
             if (service.activeDisk != null)
             {
                 flowLayoutPanel1.Controls.Add(viewFromFolder(path));
@@ -91,7 +91,7 @@ namespace disk
             }
             else
                 MessageBox.Show("Can't create folder in null space");
-            toolStripTextBox4.Clear();
+            toolStripTextBox6.Clear();
         }
         private Control viewFromFolder(string path)
         {
@@ -118,6 +118,11 @@ namespace disk
             view.Controls.Add(label);
 
             return view;
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }
