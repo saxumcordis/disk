@@ -91,11 +91,7 @@
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.создатьДискToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.toolStripSeparator3,
-            this.создатьПапкуToolStripMenuItem});
+            
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(153, 60);
             // 
@@ -243,17 +239,21 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private void setContextMenu(bool x)
+        private void setContextMenu(bool state)
         {
-
+            contextMenuStrip1.Items.Clear();
+            if (state) setDiskContextMenu();
+            else setDirContextMenu();
         }
-        private void setDiskContextMenu(bool x)
+        private void setDiskContextMenu()
         {
-
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.создатьДискToolStripMenuItem});
         }
-        private void setDirContextMenu(bool x)
+        private void setDirContextMenu()
         {
-
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.создатьПапкуToolStripMenuItem});
         }
     }
 }

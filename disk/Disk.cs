@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace disk
 {
     class Disk
     {
+        private static readonly ExplorerService service = new ExplorerService();
         const string DIRECTORY_DIVIDER = "/";
         private byte?[] content;
         private List<Meta.Meta> meta = new List<Meta.Meta>();
@@ -64,14 +67,18 @@ namespace disk
             while (start <= finish)
                 content[start++] = null;
         }
-        public List<Meta.Meta> viewDirectory(string path)
+        public List<string> viewDirectory(string path)
         {
             var regex = new Regex(path + ".+");
-            return meta.Where(element => regex.IsMatch(element.path)).ToList();
+            var folderNameRegex = new Regex(path + DIRECTORY_DIVIDER + ".+?(" + DIRECTORY_DIVIDER + "|$)");
+            return new HashSet<string>(meta.Where(element => regex.IsMatch(element.path))
+                .Select(element => folderNameRegex.Match(element.path).Groups[1].ToString())
+                .Where(element => element != "")
+                .ToList()).ToList();
         }
         public void createDirectory(string path)
         {
-            path = path + "/.dir";
+            path += ".dir";
             if (!isExist(path))
                 meta.Add(new Meta.Meta(0, 0, path));
             else

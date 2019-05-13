@@ -21,6 +21,7 @@ namespace disk
         public Form1()
         {
             InitializeComponent();
+            setContextMenu(true);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -70,31 +71,9 @@ namespace disk
             view.MouseClick += callback;
             return view;
         }
-
-        private void openDisk(DiskFacade disk)
-        {
-            service.activeDisk = disk;
-            flowLayoutPanel1.Controls.Clear();
-            foreach(var xzcho in service.activeDisk.disk.viewDirectory(""))
-            {
-                flowLayoutPanel1.Controls.Add(viewFromFolder(xzcho.path));
-            }
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            var path = toolStripTextBox6.Text;
-            if (service.activeDisk != null)
-            {
-                flowLayoutPanel1.Controls.Add(viewFromFolder(path));
-                service.activeDisk.disk.createPath(path);
-            }
-            else
-                MessageBox.Show("Can't create folder in null space");
-            toolStripTextBox6.Clear();
-        }
         private Control viewFromFolder(string path)
         {
+            MouseEventHandler callback = (object sender, MouseEventArgs e) => openFolder(path);
             var view = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
@@ -107,6 +86,7 @@ namespace disk
                 Width = 50,
                 Height = 32,
             };
+            pictureBox.MouseClick += callback;
             view.Controls.Add(pictureBox);
 
             var label = new Label()
@@ -115,14 +95,43 @@ namespace disk
                 TextAlign = ContentAlignment.TopCenter,
                 Padding = new Padding(0, 0, 66, 0)
             };
+            label.MouseClick += callback;
             view.Controls.Add(label);
 
+            view.MouseClick += callback;
             return view;
         }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void openDisk(DiskFacade disk)
         {
-
+            service.setActiveDisk(disk);
+            flowLayoutPanel1.Controls.Clear();
+            setContextMenu(false);
+            foreach (var path in service.activeDisk.disk.viewDirectory(""))
+            {
+                flowLayoutPanel1.Controls.Add(viewFromFolder(path));
+            }
+        }
+        private void openFolder(string path)
+        {
+            service.setActivePath(path);
+            flowLayoutPanel1.Controls.Clear();
+            setContextMenu(false);
+            foreach (var postpath in service.activeDisk.disk.viewDirectory(path))
+            {
+                flowLayoutPanel1.Controls.Add(viewFromFolder(postpath));
+            }
+        }
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            var path = service.activePath + "/"+ toolStripTextBox6.Text;
+            MessageBox.Show("sosat"+ service.activePath);
+            MessageBox.Show(path + "   " + service.activePath);
+            if (path.Length != 0)
+            {
+                flowLayoutPanel1.Controls.Add(viewFromFolder(path));
+                service.activeDisk.disk.createPath(path);
+            }
+            toolStripTextBox6.Clear();
         }
     }
 }
