@@ -26,13 +26,15 @@ namespace disk
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if ((service.activeDisk == null) && (toolStripTextBox1.Text.Length != 0) && (numRegex.IsMatch(toolStripTextBox4.Text)) && isDiskExists())
+            if ((service.activeDisk == null) && (toolStripTextBox1.Text.Length != 0)
+            && (numRegex.IsMatch(toolStripTextBox4.Text)) && isDiskExists())
             {
                 flowLayoutPanel1.Controls.Add(viewFromDisk(service.createDisk(toolStripTextBox2.Text, Int32.Parse(toolStripTextBox4.Text))));
                 toolStripTextBox2.Clear();
                 toolStripTextBox4.Clear();
             }
         }
+
         private bool isDiskExists()
         {
             foreach (var disk in service.disks)
@@ -44,18 +46,21 @@ namespace disk
         private Control viewFromDisk(DiskFacade disk)
         {
             MouseEventHandler callback = (object sender, MouseEventArgs e) => openDisk(disk);
+
             var view = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
                 Width = 50,
                 Height = 100,
             };
+
             var pictureBox = new PictureBox()
             {
                 Image = new Bitmap(".../disk.png"),
                 Width = 50,
                 Height = 32,
             };
+
             pictureBox.MouseClick += callback;
             view.Controls.Add(pictureBox);
 
@@ -71,6 +76,7 @@ namespace disk
             view.MouseClick += callback;
             return view;
         }
+
         private Control viewFromFolder(string path)
         {
             MouseEventHandler callback = (object sender, MouseEventArgs e) => openFolder(path);
@@ -95,42 +101,46 @@ namespace disk
                 TextAlign = ContentAlignment.TopCenter,
                 Padding = new Padding(0, 0, 66, 0)
             };
+
             label.MouseClick += callback;
             view.Controls.Add(label);
 
             view.MouseClick += callback;
             return view;
         }
+
         private void openDisk(DiskFacade disk)
         {
             service.setActiveDisk(disk);
             flowLayoutPanel1.Controls.Clear();
             setContextMenu(false);
-            foreach (var path in service.activeDisk.disk.viewDirectory(""))
-            {
-                flowLayoutPanel1.Controls.Add(viewFromFolder(path));
-            }
+
+            service.activeDisk.disk.viewDirectory("").ForEach(
+            path => flowLayoutPanel1.Controls.Add(viewFromFolder(path))
+            );
         }
+
         private void openFolder(string path)
         {
             service.setActivePath(path);
             flowLayoutPanel1.Controls.Clear();
             setContextMenu(false);
+            pathField.Text = service.activePath;
+
             foreach (var postpath in service.activeDisk.disk.viewDirectory(path))
-            {
-                flowLayoutPanel1.Controls.Add(viewFromFolder(postpath));
-            }
+                flowLayoutPanel1.Controls.Add(viewFromFolder(postpath + "/"));
         }
+
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            var path = service.activePath + "/"+ toolStripTextBox6.Text;
-            MessageBox.Show("sosat"+ service.activePath);
-            MessageBox.Show(path + "   " + service.activePath);
+            var path = service.activePath + toolStripTextBox6.Text;
+
             if (path.Length != 0)
             {
-                flowLayoutPanel1.Controls.Add(viewFromFolder(path));
                 service.activeDisk.disk.createPath(path);
+                openFolder(service.activePath);
             }
+
             toolStripTextBox6.Clear();
         }
     }

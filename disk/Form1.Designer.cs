@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.pathField = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.создатьДискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +49,6 @@
             this.toolStripTextBox6 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -70,12 +69,12 @@
             this.button2.Text = "→";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // pathField
             // 
-            this.textBox1.Location = new System.Drawing.Point(64, 15);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(703, 20);
-            this.textBox1.TabIndex = 2;
+            this.pathField.Location = new System.Drawing.Point(64, 15);
+            this.pathField.Name = "pathField";
+            this.pathField.Size = new System.Drawing.Size(703, 20);
+            this.pathField.TabIndex = 2;
             // 
             // flowLayoutPanel1
             // 
@@ -91,9 +90,8 @@
             // 
             // contextMenuStrip1
             // 
-            
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 60);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // создатьДискToolStripMenuItem
             // 
@@ -125,7 +123,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
             // 
             // toolStripTextBox3
             // 
@@ -143,12 +141,12 @@
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(157, 6);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 22);
             this.toolStripMenuItem1.Text = "Создать";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -205,13 +203,12 @@
             this.ClientSize = new System.Drawing.Size(784, 441);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.pathField);
             this.Controls.Add(this.button2);
             this.MaximumSize = new System.Drawing.Size(800, 480);
             this.MinimumSize = new System.Drawing.Size(800, 480);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,7 +218,6 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;      
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem создатьДискToolStripMenuItem;
@@ -255,6 +251,8 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.создатьПапкуToolStripMenuItem});
         }
+
+        public System.Windows.Forms.TextBox pathField;
     }
 }
 
