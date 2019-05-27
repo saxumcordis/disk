@@ -11,7 +11,8 @@ namespace disk
     {
         public DiskFacade activeDisk { get; set; }
         public string activePath { get; set; } = "/";
-        public Stack<string> history = new Stack<string>();
+        public Stack<string> backHistory = new Stack<string>();
+        public Stack<string> frontHistory = new Stack<string>();
         public List<DiskFacade> disks = new List<DiskFacade>();
         public Form1 form = new Form1();
 
@@ -25,13 +26,30 @@ namespace disk
         public void setActiveDisk(DiskFacade disk)
         {
             activeDisk = disk;
-            history.Push(disk.name + ":/");
+            backHistory.Push(disk.name + ":/");
         }
 
         public void setActivePath(string path)
         {
-            activePath = path.StartsWith("/") ? path : ("/" + path);
-            history.Push(activeDisk + ":/" );
+            if (path != activePath)
+            {
+
+                if ((backHistory.Count > 0) && (path == backHistory.Peek()))
+                {
+                    frontHistory.Push(activePath);
+                    activePath = backHistory.Pop();
+                }
+                else if ((frontHistory.Count > 0) && (path == frontHistory.Peek()))
+                {
+                    backHistory.Push(activePath);
+                    activePath = frontHistory.Pop();
+                }
+                else
+                {
+                    backHistory.Push(activePath);
+                    activePath = activePath + path;
+                }
+            }
         }
     }
 }

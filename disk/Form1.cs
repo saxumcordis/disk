@@ -26,8 +26,8 @@ namespace disk
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if ((service.activeDisk == null) && (toolStripTextBox1.Text.Length != 0)
-            && (numRegex.IsMatch(toolStripTextBox4.Text)) && isDiskExists())
+            if ((toolStripTextBox2.Text != service.activePath) && (toolStripTextBox2.Text.Length != 0)
+            && (numRegex.IsMatch(toolStripTextBox2.Text)) && isDiskExists())
             {
                 flowLayoutPanel1.Controls.Add(viewFromDisk(service.createDisk(toolStripTextBox2.Text, Int32.Parse(toolStripTextBox4.Text))));
                 toolStripTextBox2.Clear();
@@ -38,7 +38,7 @@ namespace disk
         private bool isDiskExists()
         {
             foreach (var disk in service.disks)
-                if (toolStripTextBox1.Text == disk.name)
+                if (toolStripTextBox2.Text == disk.name)
                     return false;
             return true;
         }
@@ -114,7 +114,7 @@ namespace disk
             service.setActiveDisk(disk);
             flowLayoutPanel1.Controls.Clear();
             setContextMenu(false);
-
+            service.frontHistory.Clear();
             service.activeDisk.disk.viewDirectory("").ForEach(
             path => flowLayoutPanel1.Controls.Add(viewFromFolder(path))
             );
@@ -122,13 +122,16 @@ namespace disk
 
         private void openFolder(string path)
         {
+
             service.setActivePath(path);
-            flowLayoutPanel1.Controls.Clear();
             setContextMenu(false);
+            flowLayoutPanel1.Controls.Clear();
             pathField.Text = service.activePath;
 
             foreach (var postpath in service.activeDisk.disk.viewDirectory(path))
+            {
                 flowLayoutPanel1.Controls.Add(viewFromFolder(postpath + "/"));
+            }
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -142,6 +145,31 @@ namespace disk
             }
 
             toolStripTextBox6.Clear();
+        }
+
+        private void goBackButton_Click(object sender, EventArgs e)
+        {
+            if (service.backHistory.Count < 2)
+            {
+                setContextMenu(true);
+                flowLayoutPanel1.Controls.Clear();
+                service.backHistory.Clear();
+                pathField.Clear();
+                service.activePath = null;
+                foreach (var disk in service.disks)
+                    flowLayoutPanel1.Controls.Add(viewFromDisk(disk));
+                service.frontHistory.Push("");
+            }
+            else
+                openFolder(service.backHistory.Peek());
+        }
+
+        private void goForwardButton_Click(object sender, EventArgs e)
+        {
+            if (service.frontHistory.Count != 0)
+            {
+                openFolder(service.frontHistory.Peek());
+            }
         }
     }
 }

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.goBackButton = new System.Windows.Forms.Button();
+            this.goForwardButton = new System.Windows.Forms.Button();
             this.pathField = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -51,23 +51,25 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.SuspendLayout();
             // 
-            // button1
+            // goBackButton
             // 
-            this.button1.Location = new System.Drawing.Point(13, 13);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(19, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "←";
-            this.button1.UseVisualStyleBackColor = true;
+            this.goBackButton.Location = new System.Drawing.Point(13, 13);
+            this.goBackButton.Name = "goBackButton";
+            this.goBackButton.Size = new System.Drawing.Size(19, 23);
+            this.goBackButton.TabIndex = 0;
+            this.goBackButton.Text = "←";
+            this.goBackButton.UseVisualStyleBackColor = true;
+            this.goBackButton.Click += new System.EventHandler(this.goBackButton_Click);
             // 
-            // button2
+            // goForwardButton
             // 
-            this.button2.Location = new System.Drawing.Point(38, 13);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(19, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "→";
-            this.button2.UseVisualStyleBackColor = true;
+            this.goForwardButton.Location = new System.Drawing.Point(38, 13);
+            this.goForwardButton.Name = "goForwardButton";
+            this.goForwardButton.Size = new System.Drawing.Size(19, 23);
+            this.goForwardButton.TabIndex = 1;
+            this.goForwardButton.Text = "→";
+            this.goForwardButton.UseVisualStyleBackColor = true;
+            this.goForwardButton.Click += new System.EventHandler(this.goForwardButton_Click);
             // 
             // pathField
             // 
@@ -202,9 +204,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 441);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.goBackButton);
             this.Controls.Add(this.pathField);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.goForwardButton);
             this.MaximumSize = new System.Drawing.Size(800, 480);
             this.MinimumSize = new System.Drawing.Size(800, 480);
             this.Name = "Form1";
@@ -216,8 +218,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button goBackButton;
+        private System.Windows.Forms.Button goForwardButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;      
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem создатьДискToolStripMenuItem;
