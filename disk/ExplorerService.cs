@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 
 namespace disk
@@ -11,6 +7,7 @@ namespace disk
     {
         public DiskFacade activeDisk { get; set; }
         public string activePath { get; set; } = "/";
+        public File activeFile { get; set; }
         public Stack<string> backHistory = new Stack<string>();
         public Stack<string> frontHistory = new Stack<string>();
         public List<DiskFacade> disks = new List<DiskFacade>();
@@ -33,7 +30,6 @@ namespace disk
         {
             if (path != activePath)
             {
-
                 if ((backHistory.Count > 0) && (path == backHistory.Peek()))
                 {
                     frontHistory.Push(activePath);
@@ -50,6 +46,10 @@ namespace disk
                     activePath = activePath + path;
                 }
             }
+        }
+        public void setActiveFile(File file)
+        {
+            activeFile = file;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace disk
     class Disk
     {
         private static readonly ExplorerService service = new ExplorerService();
+        public List<File> files = new List<File>();
 
         const string DIRECTORY_DIVIDER = "/";
 
@@ -38,8 +39,13 @@ namespace disk
             foreach (var element in file.getContent())
                 content[counter++] = element;
             addMeta(file, index);
+            addFile(file);
+            
         }
-
+        private void addFile(File file)
+        {
+            files.Add(new File(file.path, file.getContent()));
+        }
         private void addMeta(File file, int index)
         {
             meta.Add(new Meta.Meta(index, file.getSize(), file.getPath()));
@@ -73,6 +79,16 @@ namespace disk
             meta.Remove(file);
             clearContent(file.index, file.index + file.length);
         }
+        public void deleteFile(string path)
+        {
+            var file = files.Single(element => element.path == path);
+            files.Remove(file);
+        }
+        public File getFile(string path)
+        {
+            return files.Single(element => element.path.Contains(path));
+        }
+
 
         private void clearContent(int start, int finish)
         {
@@ -89,7 +105,7 @@ namespace disk
             meta.Select(element => element.path)
                 .Where(element => regex.IsMatch(element))
                 .Select(element => Regex.Replace(element, "^" + path, ""))
-                .Where(element => element != ".dir")
+                .Where(element => element != "/.dir" && element != ".dir")
                 .Select(element => folderNameRegex.Match(element).Groups[1].ToString())
                 .ToList()
                 ).ToList();
@@ -122,5 +138,31 @@ namespace disk
         {
             return content;
         }
+        public int getIndexOfFile(File file)
+        {
+            return meta[meta.IndexOf(meta.Single(element => element.path == file.path))].index;
+        }
+        //public string createFilePath(string path)
+        //{
+        //    var resultPath = DIRECTORY_DIVIDER;
+        //    foreach (var dir in path.Split(DIRECTORY_DIVIDER.ToCharArray()))
+        //    {
+        //        if (dir != "")
+        //        {
+        //            resultPath += dir + DIRECTORY_DIVIDER;
+        //            if (!isExist(resultPath + ".file"))
+        //                createFile(resultPath);
+        //        }
+        //    }
+        //    return resultPath;
+        //}
+        //public void createFile(string path)
+        //{
+        //    path += ".file";
+        //    if (!isExist(path))
+        //        meta.Add(new Meta.Meta(0, 0, path));
+        //    else
+        //        throw new PathExistsException();
+        //}
     }
 }
