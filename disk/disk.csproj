@@ -60,10 +60,6 @@
     <Compile Include="Meta\SameIndexException.cs" />
     <Compile Include="NotEnoughSpaceException.cs" />
     <Compile Include="PathExistsException.cs" />
-    <Compile Include="GraphicElement.cs" />
-    <Compile Include="Process.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

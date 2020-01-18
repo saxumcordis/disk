@@ -14,7 +14,6 @@ namespace disk
 {
     public partial class Form1 : Form
     {
-
         private static readonly ExplorerService service = new ExplorerService();
         private readonly Regex numRegex = new Regex("^\\d+$");
         private StringFormat format = new StringFormat();
@@ -23,18 +22,16 @@ namespace disk
             InitializeComponent();
             setContextMenu(true);
         }
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if ((toolStripTextBox2.Text != service.activePath) && (toolStripTextBox2.Text.Length != 0) && (toolStripTextBox4.Text.Length != 0)
-            && (numRegex.IsMatch(toolStripTextBox2.Text)) && isDiskExists())
+            && (numRegex.IsMatch(toolStripTextBox4.Text)) && isDiskExists())
             {
                 flowLayoutPanel1.Controls.Add(viewFromDisk(service.createDisk(toolStripTextBox2.Text, Int32.Parse(toolStripTextBox4.Text))));
                 toolStripTextBox2.Clear();
                 toolStripTextBox4.Clear();
             }
         }
-
         private bool isDiskExists()
         {
             foreach (var disk in service.disks)
@@ -140,8 +137,6 @@ namespace disk
 
             return view;
         }
-
-
         private void openDisk(DiskFacade disk)
         {
             service.setActiveDisk(disk);
@@ -154,10 +149,8 @@ namespace disk
             path => flowLayoutPanel1.Controls.Add(viewFromFolder("/" + path))
             );
         }
-
         private void openFolder(string path)
         {
-
             service.setActivePath(path);
             pathField.Text = service.activePath;
             setContextMenu(false);
@@ -173,9 +166,7 @@ namespace disk
                     MessageBox.Show(postpath);
                     flowLayoutPanel1.Controls.Add(viewFromFile(service.activeDisk.disk.getFile(postpath)));
                 }
-            }
-              
-
+            }         
         }
         private void fileActions(File file)
         {
@@ -188,21 +179,21 @@ namespace disk
                 service.activeDisk.disk.delete(file.path);
                 service.activeDisk.disk.deleteFile(file.path);
                 flowLayoutPanel1.Controls.Clear();
-                foreach (var element in service.activeDisk.disk.files)
+                foreach (var postpath in service.activeDisk.disk.viewDirectory(service.activePath))
                 {
-                    flowLayoutPanel1.Controls.Add(viewFromFile(element));
+                    if (postpath.Contains("dir"))
+                        flowLayoutPanel1.Controls.Add(viewFromFolder(postpath));
+                    else if (postpath.Contains("file"))
+                    {
+                        MessageBox.Show(postpath);
+                        flowLayoutPanel1.Controls.Add(viewFromFile(service.activeDisk.disk.getFile(postpath)));
+                    }
                 }
             }
-            else if (dialogResult == DialogResult.No)
-            {
-
-            }
-
         }
-
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            var path = service.activePath + toolStripTextBox6.Text;
+            var path = service.activePath + toolStripTextBox6.Text+".dir";
 
 
             if (path.Length != 0)
@@ -214,7 +205,6 @@ namespace disk
 
             toolStripTextBox6.Clear();
         }
-
         private void goBackButton_Click(object sender, EventArgs e)
         {
             if (service.backHistory.Count < 2)
@@ -231,7 +221,6 @@ namespace disk
             else
                 openFolder(service.backHistory.Peek());
         }
-
         private void goForwardButton_Click(object sender, EventArgs e)
         {
             if (service.frontHistory.Count != 0)
@@ -243,7 +232,7 @@ namespace disk
         {
             if (numRegex.IsMatch(toolStripTextBox10.Text))
             {
-                var file = new File(service.activePath + toolStripTextBox8.Text + ".file", Encoding.ASCII.GetBytes(toolStripTextBox10.Text));
+                var file = new File(service.activePath + toolStripTextBox8.Text+".file", Encoding.ASCII.GetBytes(toolStripTextBox10.Text));
                 service.activeDisk.disk.write(file);
                 flowLayoutPanel1.Controls.Add(viewFromFile(file));
                 toolStripTextBox8.Clear();

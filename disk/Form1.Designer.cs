@@ -103,7 +103,7 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.создатьФайлStripMenuItem4});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 26);
             // 
             // создатьФайлStripMenuItem4
             // 
@@ -115,7 +115,7 @@
             this.toolStripTextBox10,
             this.создатьФайлMenuItem3});
             this.создатьФайлStripMenuItem4.Name = "создатьФайлStripMenuItem4";
-            this.создатьФайлStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.создатьФайлStripMenuItem4.Size = new System.Drawing.Size(149, 22);
             this.создатьФайлStripMenuItem4.Text = "Создать Файл";
             // 
             // toolStripTextBox7
